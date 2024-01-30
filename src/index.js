@@ -1,12 +1,27 @@
 const express = require('express');
 const { ApolloServer, gql } = require('apollo-server-express');
+require('dotenv').config();
+const db = require('./db');
 
 const port = process.env.PORT || 4000;
+const DB_HOST = process.env.DB_HOST;
 
 let notes = [
-  { id: '1', content: 'This is a note', author: 'Joohyun' },
-  { id: '2', content: 'This is another note', author: 'Dahee' },
-  { id: '3', content: 'Oh hey look, another note!', author: 'Nanyoung' }
+  {
+    id: '1',
+    content: '안녕하세요 멋쟁이사자처럼 최주현입니다.',
+    author: 'Joohyun'
+  },
+  {
+    id: '2',
+    content: '안녕하세요 멋쟁이사자처럼 여다희입니다.',
+    author: 'Dahee'
+  },
+  {
+    id: '3',
+    content: '안녕하세요 멋쟁이사자처럼 김난영입니다.',
+    author: 'Nanyoung'
+  }
 ];
 
 const typeDefs = gql`
@@ -49,6 +64,8 @@ const resolvers = {
 };
 
 const app = express();
+
+db.connect(DB_HOST);
 
 const server = new ApolloServer({ typeDefs, resolvers });
 server.applyMiddleware({ app, path: '/api' });
