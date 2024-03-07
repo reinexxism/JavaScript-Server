@@ -91,11 +91,11 @@ module.exports = {
     const user = await models.User.findOne({
       $or: [{ email }, { username }]
     });
-    // 사용자를 찾지 못하면 인증 에러
+    // 인증 에러 : 사용자를 찾지 못한 경우
     if (!user) {
       throw new AuthenticationError('Error Sign in!');
     }
-    // 비밀번호가 불일치하면 인증 에러
+    // 인증 에러 : 비밀번호가 일치하지 않는 경우
     const valid = await bcrypt.compare(password, user.password);
     if (!valid) {
       throw new AuthenticationError('Error signing in!');
